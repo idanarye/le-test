@@ -49,10 +49,10 @@ jobs:
         include:
           - channel: linux
             target: x86_64-unknown-linux-gnu
-            binary: ${{ env.binary }}
+            binary_suffix: ''
           - channel: windows
             target: x86_64-pc-windows-gnu
-            binary: ${{ env.binary }}.exe
+            binary_suffix: .exe
     runs-on: ubuntu-latest
 
     steps:
@@ -75,7 +75,7 @@ jobs:
       - name: Prepare package
         run: |
           mkdir build
-          cp target/${{ matrix.target }}/release/${{ matrix.binary }} build/
+          cp target/${{ matrix.target }}/release/${{ env.binary }}${{ matrix.binary_suffix }} build/
           cp -r assets build
 
       - name: Upload with Butler
