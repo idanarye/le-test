@@ -42,5 +42,3 @@ jobs:
           ITCH_GAME: le-test
           ITCH_USER: aeon-felis
           PACKAGE: linux
-        run: |
-          zip --recurse-paths ../${{ env.binary }}.zip .
