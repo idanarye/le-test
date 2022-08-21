@@ -72,7 +72,8 @@ jobs:
 
       - name: Build
         run: |
-          cargo build --release --target ${{ matrix.target }}
+          cargo install cross
+          cross build --release --target ${{ matrix.target }}
 
       - name: Prepare package
         run: |
