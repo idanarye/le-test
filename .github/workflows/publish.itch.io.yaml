@@ -52,7 +52,7 @@ jobs:
             extra_deps: libx11-dev libasound2-dev libudev-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev mingw-w64
             binary_suffix: ''
           - channel: windows
-            target: x86_64-pc-windows-gnu
+            target: x86_64-pc-windows-msvc
             extra_deps: mingw-w64
             binary_suffix: .exe
     runs-on: ubuntu-latest
