@@ -71,9 +71,14 @@ jobs:
           sudo apt-get update; sudo apt-get install pkg-config ${{ matrix.extra_deps }}
 
       - name: Build
-        run: |
-          cargo install cross
-          cross build --release --target ${{ matrix.target }}
+        # run: |
+          # cargo install cross
+          # cross build --release --target ${{ matrix.target }}
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --target ${{ matrix.target }}
 
       - name: Prepare package
         run: |
