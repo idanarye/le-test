@@ -5,12 +5,13 @@ on: workflow_dispatch
 env:
   # update with the name of the main binary
   binary: le-test-game
+  BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
   ITCH_USER: aeon-felis
   ITCH_GAME: le-test
 
 jobs:
   # Build for wasm
-  publish-wasm:
+  build-wasm:
     runs-on: ubuntu-latest
 
     steps:
@@ -55,7 +56,7 @@ jobs:
           #PACKAGE: wasm
 
   # Build for Linux
-  publish-linux:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -101,7 +102,7 @@ jobs:
           #PACKAGE: linux
 
   # Build for Windows
-  publish-windows:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -151,7 +152,7 @@ jobs:
           # api-key: ${{ secrets.BUTLER_CREDENTIALS }}
 
   # Build for macOS
-  publish-macos:
+  build-mac:
     runs-on: macOS-latest
 
     steps:
@@ -184,3 +185,41 @@ jobs:
         with:
           name: build-mac.dmg
           path: build-mac.dmg
+
+  upload-to-itch:
+    runs-on: ubuntu-latest
+    needs:
+      - build-wasm
+      - build-linux
+      - build-windows
+      - build-mac
+
+    steps:
+      - name: Download artifacts
+      - uses: actions/download-artifact@v3
+        with:
+          path: .
+
+      - name: Upload WASM
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+          CHANNEL: wasm
+          PACKAGE: build-wasm.zip
+
+      - name: Upload Linux
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+          CHANNEL: linux
+          PACKAGE: build-linux.zip
+
+      - name: Upload Windows
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+          CHANNEL: windows
+          PACKAGE: build-windows.zip
+
+      - name: Upload Mac
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+          CHANNEL: mac
+          PACKAGE: build-mac.dmg
