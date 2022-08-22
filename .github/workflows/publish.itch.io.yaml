@@ -44,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: build-wasm
+          name: build-wasm.zip
           path: build-wasm.zip
 
       #- name: Upload with Butler
@@ -85,12 +85,12 @@ jobs:
         working-directory: ./linux
         run: |
           # zip --recurse-paths ../${{ env.binary }}.zip .
-          zip --recurse-paths build-linux.zip .
+          zip --recurse-paths ../build-linux.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: build-linux
+          name: build-linux.zip
           path: build-linux.zip
 
       #- name: Upload with Butler
@@ -133,7 +133,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: build-windows
+          name: build-windows.zip
           path: build-windows.zip
 
       #- name: Upload with Butler
@@ -150,38 +150,37 @@ jobs:
           # channel: windows
           # api-key: ${{ secrets.BUTLER_CREDENTIALS }}
 
-  # # Build for macOS
-  # publish-macos:
-    # runs-on: macOS-latest
+  # Build for macOS
+  publish-macos:
+    runs-on: macOS-latest
 
-    # steps:
-      # - uses: little-core-labs/get-git-tag@v3.0.1
-        # id: get_version
-      # - uses: actions/checkout@v2
-      # - uses: actions-rs/toolchain@v1
-        # with:
-          # toolchain: stable
-          # target: x86_64-apple-darwin
-          # override: true
-      # - name: Environment Setup
-        # run: |
-          # export CFLAGS="-fno-stack-check"
-          # export MACOSX_DEPLOYMENT_TARGET="10.9"
+    steps:
+      - uses: little-core-labs/get-git-tag@v3.0.1
+        id: get_version
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-apple-darwin
+          override: true
+      - name: Environment Setup
+        run: |
+          export CFLAGS="-fno-stack-check"
+          export MACOSX_DEPLOYMENT_TARGET="10.9"
 
-      # - name: Build
-        # run: |
-          # cargo build --release --target x86_64-apple-darwin
+      - name: Build
+        run: |
+          cargo build --release --target x86_64-apple-darwin
 
-      # - name: Prepare Package
-        # run: |
-          # mkdir -p ${{ env.binary }}.app/Contents/MacOS
-          # cp target/x86_64-apple-darwin/release/${{ env.binary }} ${{ env.binary }}.app/Contents/MacOS/
-          # cp -r assets ${{ env.binary }}.app/Contents/MacOS/
-          # hdiutil create -fs HFS+ -volname "${{ env.binary }}" -srcfolder ${{ env.binary }}.app ${{ env.binary }}.dmg
+      - name: Prepare Package
+        run: |
+          mkdir -p ${{ env.binary }}.app/Contents/MacOS
+          cp target/x86_64-apple-darwin/release/${{ env.binary }} ${{ env.binary }}.app/Contents/MacOS/
+          cp -r assets ${{ env.binary }}.app/Contents/MacOS/
+          hdiutil create -fs HFS+ -volname "${{ env.binary }}" -srcfolder ${{ env.binary }}.app build-mac.dmg
 
-      # - name: Upload with Butler
-        # uses: manleydev/butler-publish-itchio-action@master
-        # env:
-          # BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          # CHANNEL: mac
-          # PACKAGE: ${{ env.binary }}.dmg
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-mac.dmg
+          path: build-mac.dmg
