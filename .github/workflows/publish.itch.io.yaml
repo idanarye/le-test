@@ -101,12 +101,18 @@ jobs:
           cp -r assets windows/
 
       - name: Upload with Butler
-        uses: robpc/itchio-upload-action@v1
-        with:
-          path: windows
-          project: ${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}
-          channel: windows
-          api-key: ${{ secrets.BUTLER_CREDENTIALS }}
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -O butler.zip https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default
+          unzip butler.zip
+          ./butler.exe push windows ${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}
+        # uses: robpc/itchio-upload-action@v1
+        # with:
+          # path: windows
+          # project: ${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}
+          # channel: windows
+          # api-key: ${{ secrets.BUTLER_CREDENTIALS }}
 
   # # Build for macOS
   # publish-macos:
