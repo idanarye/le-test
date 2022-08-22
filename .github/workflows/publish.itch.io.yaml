@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: build.zip
-          name: ${{ env.ITCH_GAME }}-wasm.zip
+          name: ${{ env.binary }}-wasm.zip
 
   # Build for Linux
   build-linux:
@@ -85,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: build-linux.zip
-          name: ${{ env.ITCH_GAME }}-linux.zip
+          name: ${{ env.binary }}-linux.zip
 
       #- name: Upload with Butler
         #uses: manleydev/butler-publish-itchio-action@master
@@ -128,7 +128,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: build.zip
-          name: ${{ env.ITCH_GAME }}-windows.zip
+          name: ${{ env.binary }}-windows.zip
 
       #- name: Upload with Butler
         #env:
@@ -177,7 +177,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: build.dmg
-          name: ${{ env.ITCH_GAME }}-mac.dmg
+          name: ${{ env.binary }}-mac.dmg
 
   upload-to-itch:
     runs-on: ubuntu-latest
@@ -197,22 +197,22 @@ jobs:
         uses: manleydev/butler-publish-itchio-action@master
         env:
           CHANNEL: wasm
-          PACKAGE: ${{ env.ITCH_GAME }}-wasm.zip
+          PACKAGE: ${{ env.binary }}-wasm.zip
 
       - name: Upload Linux
         uses: manleydev/butler-publish-itchio-action@master
         env:
           CHANNEL: linux
-          PACKAGE: ${{ env.ITCH_GAME }}-linux.zip
+          PACKAGE: ${{ env.binary }}-linux.zip
 
       - name: Upload Windows
         uses: manleydev/butler-publish-itchio-action@master
         env:
           CHANNEL: windows
-          PACKAGE: ${{ env.ITCH_GAME }}-windows.zip
+          PACKAGE: ${{ env.binary }}-windows.zip
 
       - name: Upload Mac
         uses: manleydev/butler-publish-itchio-action@master
         env:
           CHANNEL: mac
-          PACKAGE: ${{ env.ITCH_GAME }}-mac.dmg
+          PACKAGE: ${{ env.binary }}-mac.dmg
