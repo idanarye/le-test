@@ -84,7 +84,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: build-linux.zip
+          path: linux.zip
           name: ${{ env.binary }}-linux.zip
 
       #- name: Upload with Butler
