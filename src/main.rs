@@ -20,4 +20,10 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
         transform: Transform::from_xyz(0.0, 150.0, 0.0),
         ..Default::default()
     });
+
+    commands.spawn_bundle(SpriteBundle {
+        texture: asset_server.load("icon.png"),
+        transform: Transform::from_xyz(-150.0, -150.0, 0.0),
+        ..Default::default()
+    });
 }
