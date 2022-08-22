@@ -40,12 +40,12 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: wasm
-          dest: build.zip
+          dest: ${{ env.binary }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: build.zip
+          path: ${{ env.binary }}.zip
           name: ${{ env.binary }}-wasm.zip
 
   # Build for Linux
@@ -78,21 +78,13 @@ jobs:
       - name: Package as a zip
         working-directory: ./linux
         run: |
-          # zip --recurse-paths ../${{ env.binary }}.zip .
-          zip --recurse-paths ../build.zip .
+          zip --recurse-paths ../${{ env.binary }}.zip .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: build.zip
+          path: ${{ env.binary }}.zip
           name: ${{ env.binary }}-linux.zip
-
-      #- name: Upload with Butler
-        #uses: manleydev/butler-publish-itchio-action@master
-        #env:
-          #BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          #CHANNEL: linux
-          #PACKAGE: linux
 
   # Build for Windows
   build-windows:
@@ -122,27 +114,13 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: windows
-          dest: build.zip
+          dest: ${{ env.binary }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: build.zip
+          path: ${{ env.binary }}.zip
           name: ${{ env.binary }}-windows.zip
-
-      #- name: Upload with Butler
-        #env:
-          #BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
-        #run: |
-          #wget -O butler.zip https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default
-          #unzip butler.zip
-          #./butler.exe push windows ${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}
-        # uses: robpc/itchio-upload-action@v1
-        # with:
-          # path: windows
-          # project: ${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}
-          # channel: windows
-          # api-key: ${{ secrets.BUTLER_CREDENTIALS }}
 
   # Build for macOS
   build-mac:
@@ -171,12 +149,12 @@ jobs:
           mkdir -p ${{ env.binary }}.app/Contents/MacOS
           cp target/x86_64-apple-darwin/release/${{ env.binary }} ${{ env.binary }}.app/Contents/MacOS/
           cp -r assets ${{ env.binary }}.app/Contents/MacOS/
-          hdiutil create -fs HFS+ -volname "${{ env.binary }}" -srcfolder ${{ env.binary }}.app build.dmg
+          hdiutil create -fs HFS+ -volname "${{ env.binary }}" -srcfolder ${{ env.binary }}.app ${{ env.binary }}.dmg
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: build.dmg
+          path: ${{ env.binary }}.dmg
           name: ${{ env.binary }}-mac.dmg
 
   upload-to-itch:
