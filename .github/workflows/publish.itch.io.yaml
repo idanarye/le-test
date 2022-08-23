@@ -5,9 +5,7 @@ on: workflow_dispatch
 env:
   # update with the name of the main binary
   binary: le-test-game
-  BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-  ITCH_USER: aeon-felis
-  ITCH_GAME: le-test
+  itch_target: aeon-felis/le-test
 
 jobs:
   # Build for wasm
@@ -46,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ${{ env.binary }}.zip
-          name: ${{ env.binary }}-wasm.zip
+          wasm
 
   # Build for Linux
   build-linux:
@@ -84,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ${{ env.binary }}.zip
-          name: ${{ env.binary }}-linux.zip
+          name: linux
 
   # Build for Windows
   build-windows:
@@ -120,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ${{ env.binary }}.zip
-          name: ${{ env.binary }}-windows.zip
+          name: windows
 
   # Build for macOS
   build-mac:
@@ -155,7 +153,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ${{ env.binary }}.dmg
-          name: ${{ env.binary }}-mac.dmg
+          name: mac
 
   upload-to-itch:
     runs-on: ubuntu-latest
@@ -171,26 +169,49 @@ jobs:
         with:
           path: .
 
-      - name: Upload WASM
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          CHANNEL: wasm
-          PACKAGE: ${{ env.binary }}-wasm.zip
+      - name: Extract artifacts
+        run: |
+          mkdir channels
+          for file in *.zip; do
+              echo $file ${file%.zip}
+              unzip $file -d channels/${file%.zip}
+          done
 
-      - name: Upload Linux
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          CHANNEL: linux
-          PACKAGE: ${{ env.binary }}-linux.zip
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
 
-      - name: Upload Windows
-        uses: manleydev/butler-publish-itchio-action@master
+      - name: Upload to itch.io
         env:
-          CHANNEL: windows
-          PACKAGE: ${{ env.binary }}-windows.zip
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          for channel in $(ls channels); do
+              butler push channels/$channel/* ${{ env.itch_target }}:$channel
+          done
 
-      - name: Upload Mac
-        uses: manleydev/butler-publish-itchio-action@master
-        env:
-          CHANNEL: mac
-          PACKAGE: ${{ env.binary }}-mac.dmg
+      #- name: Upload WASM
+        #uses: manleydev/butler-publish-itchio-action@master
+        #env:
+          #CHANNEL: wasm
+          #PACKAGE: ${{ env.binary }}-wasm.zip
+
+      #- name: Upload Linux
+        #uses: manleydev/butler-publish-itchio-action@master
+        #env:
+          #CHANNEL: linux
+          #PACKAGE: ${{ env.binary }}-linux.zip
+
+      #- name: Upload Windows
+        #uses: manleydev/butler-publish-itchio-action@master
+        #env:
+          #CHANNEL: windows
+          #PACKAGE: ${{ env.binary }}-windows.zip
+
+      #- name: Upload Mac
+        #uses: manleydev/butler-publish-itchio-action@master
+        #env:
+          #CHANNEL: mac
+          #PACKAGE: ${{ env.binary }}-mac.dmg
