@@ -176,11 +176,16 @@ jobs:
           chmod +x butler
           ./butler -V
 
+      - name: Show what we have
+        run: |
+          ls -R
+
       - name: Upload to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
           for channel in $(ls builds); do
+              echo ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
               ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
 
