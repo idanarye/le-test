@@ -167,16 +167,13 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          path: .
+          path: ./artifacts
 
       - name: Extract artifacts
         run: |
-          ls
           mkdir channels
-          ls
-          for file in *.zip; do
-              echo $file ${file%.zip}
-              unzip $file -d channels/${file%.zip}
+          for channel in $(ls artifacts); do
+              unzip artifacts/$channel -d channels/$channel
           done
 
       - name: Install butler
