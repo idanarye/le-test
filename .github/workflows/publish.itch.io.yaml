@@ -181,7 +181,7 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
           for channel in $(ls builds); do
-              butler push builds/$channel/* ${{ env.itch_target }}:$channel
+              ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
 
       #- name: Upload WASM
