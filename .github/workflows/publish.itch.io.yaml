@@ -167,18 +167,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          path: ./artifacts
-
-      - name: See what we have
-        run: |
-          ls -R
-
-      - name: Extract artifacts
-        run: |
-          mkdir channels
-          for channel in $(ls artifacts); do
-              unzip artifacts/$channel -d channels/$channel
-          done
+          path: ./builds
 
       - name: Install butler
         run: |
@@ -191,8 +180,8 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          for channel in $(ls channels); do
-              butler push channels/$channel/* ${{ env.itch_target }}:$channel
+          for channel in $(ls builds); do
+              butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
 
       #- name: Upload WASM
