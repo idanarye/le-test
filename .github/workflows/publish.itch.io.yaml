@@ -169,6 +169,10 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: See what we have
+        run: |
+          ls -R
+
       - name: Extract artifacts
         run: |
           mkdir channels
