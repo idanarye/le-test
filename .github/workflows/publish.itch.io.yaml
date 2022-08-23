@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: ${{ env.binary }}.zip
-          wasm
+          name: wasm
 
   # Build for Linux
   build-linux:
