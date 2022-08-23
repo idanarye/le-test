@@ -171,7 +171,9 @@ jobs:
 
       - name: Extract artifacts
         run: |
+          ls
           mkdir channels
+          ls
           for file in *.zip; do
               echo $file ${file%.zip}
               unzip $file -d channels/${file%.zip}
