@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   # update with the name of the main binary
-  binary: le-test-game
+  binary: le-test
   itch_target: aeon-felis/le-test
 
 jobs:

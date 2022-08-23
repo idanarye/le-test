@@ -7,7 +7,7 @@ on:
 
 env:
   # update with the name of the main binary
-  binary: le-test-game
+  binary: le-test
 
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Prepare package
         run: |
-          wasm-bindgen --no-typescript --out-name le-test-game --out-dir wasm --target web target/wasm32-unknown-unknown/release/${{ env.binary }}.wasm
+          wasm-bindgen --no-typescript --out-name le-test --out-dir wasm --target web target/wasm32-unknown-unknown/release/${{ env.binary }}.wasm
           cp -r assets wasm/
       - name: Package as a zip
         uses: vimtor/action-zip@v1
