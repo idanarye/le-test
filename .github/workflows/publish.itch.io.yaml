@@ -1,6 +1,14 @@
 name: Publish to itch.io
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      wasm:
+        description: Build and publish WASM
+        required: false
+        type: boolean
+        default: true
+
 
 env:
   # update with the name of the main binary
@@ -42,16 +50,9 @@ jobs:
               ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
 
-  le-blabla:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Le step
-        run: |
-          echo ${{ jobs.upload-to-itch.needs }}
-
   # Build for wasm
   build-wasm:
+    if: ${{ inputs.wasm }}
     runs-on: ubuntu-latest
 
     steps:
