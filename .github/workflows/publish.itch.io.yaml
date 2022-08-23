@@ -188,27 +188,3 @@ jobs:
               echo ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
               ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
-
-      #- name: Upload WASM
-        #uses: manleydev/butler-publish-itchio-action@master
-        #env:
-          #CHANNEL: wasm
-          #PACKAGE: ${{ env.binary }}-wasm.zip
-
-      #- name: Upload Linux
-        #uses: manleydev/butler-publish-itchio-action@master
-        #env:
-          #CHANNEL: linux
-          #PACKAGE: ${{ env.binary }}-linux.zip
-
-      #- name: Upload Windows
-        #uses: manleydev/butler-publish-itchio-action@master
-        #env:
-          #CHANNEL: windows
-          #PACKAGE: ${{ env.binary }}-windows.zip
-
-      #- name: Upload Mac
-        #uses: manleydev/butler-publish-itchio-action@master
-        #env:
-          #CHANNEL: mac
-          #PACKAGE: ${{ env.binary }}-mac.dmg
