@@ -42,6 +42,14 @@ jobs:
               ./butler push builds/$channel/* ${{ env.itch_target }}:$channel
           done
 
+  le-blabla:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Le step
+        run: |
+          echo ${{ jobs.upload-to-itch.needs }}
+
   # Build for wasm
   build-wasm:
     runs-on: ubuntu-latest
