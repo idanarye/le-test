@@ -9,7 +9,7 @@ env:
   # update with the name of the main binary
   binary: le-test
   itch_target: aeon-felis/le-test
-  add_binaries_to_github_release: true
+  add_binaries_to_github_release: false
 
 
 jobs:
@@ -52,7 +52,7 @@ jobs:
           name: wasm
 
       - name: Upload binaries to release
-        if: ${{ fromJSON(env.add_binaries_to_github_release) }}
+        if: ${{ env.add_binaries_to_github_release == 'true' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
           name: linux
 
       - name: Upload binaries to release
-        if: ${{ fromJSON(env.add_binaries_to_github_release) }}
+        if: ${{ env.add_binaries_to_github_release == 'true' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -145,7 +145,7 @@ jobs:
           name: windows
 
       - name: Upload binaries to release
-        if: ${{ fromJSON(env.add_binaries_to_github_release) }}
+        if: ${{ env.add_binaries_to_github_release == 'true' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -190,7 +190,7 @@ jobs:
           name: mac
 
       - name: Upload binaries to release
-        if: ${{ fromJSON(env.add_binaries_to_github_release) }}
+        if: ${{ env.add_binaries_to_github_release == 'true' }}
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
