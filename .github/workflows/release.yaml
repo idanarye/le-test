@@ -8,6 +8,7 @@ on:
 env:
   # update with the name of the main binary
   binary: le-test
+  itch_target: aeon-felis/le-test
 
 
 jobs:
@@ -42,6 +43,12 @@ jobs:
         with:
           files: wasm
           dest: ${{ env.binary }}.zip
+
+      - name: Upload binaries to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.binary }}.zip
+          name: wasm
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -87,6 +94,12 @@ jobs:
           #files: linux
           #dest: ${{ env.binary }}.zip
 
+      - name: Upload binaries to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.binary }}.zip
+          name: linux
+
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -125,6 +138,12 @@ jobs:
           files: windows
           dest: ${{ env.binary }}.zip
 
+      - name: Upload binaries to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.binary }}.zip
+          name: windows
+
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -162,6 +181,12 @@ jobs:
           cp target/x86_64-apple-darwin/release/${{ env.binary }} ${{ env.binary }}.app/Contents/MacOS/
           cp -r assets ${{ env.binary }}.app/Contents/MacOS/
           hdiutil create -fs HFS+ -volname "${{ env.binary }}" -srcfolder ${{ env.binary }}.app ${{ env.binary }}.dmg
+
+      - name: Upload binaries to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{ env.binary }}.dmg
+          name: mac
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
