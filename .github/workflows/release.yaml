@@ -205,7 +205,7 @@ jobs:
       - release-linux
       - release-windows
       - release-macos
-    if: ${{ false }}
+    # if: ${{ false }}
     env:
       itch_target: aeon-felis/le-test
 
