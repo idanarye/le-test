@@ -9,7 +9,6 @@ env:
   # update with the name of the main binary
   binary: le-test
   add_binaries_to_github_release: true
-  itch_target: aeon-felis/le-test
 
 
 jobs:
@@ -199,22 +198,16 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  check-if-upload-to-itch-is-configured:
-    runs-on: ubuntu-latest
-    outputs:
-      should_upload: ${{ env.itch_target != '' }}
-    steps:
-      - run: echo
-
   upload-to-itch:
     runs-on: ubuntu-latest
     needs:
-      - check-if-upload-to-itch-is-configured
       - release-wasm
       - release-linux
       - release-windows
       - release-macos
-    if: ${{ needs.check-if-upload-to-itch-is-configured.outputs.should_upload }}
+    if: ${{ false }}
+    env:
+      itch_target: aeon-felis/le-test
 
     steps:
       - name: Download artifacts
