@@ -1,7 +1,7 @@
 name: Test Job Output
 
-env:
-  some_flag: blabla
+# env:
+  # some_flag: blabla
 
 on:
   push:
