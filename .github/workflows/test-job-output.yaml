@@ -1,0 +1,35 @@
+name: Test Job Output
+
+env:
+  some_flag: blabla
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  emitter-job:
+    runs-on: ubuntu-latest
+    outputs:
+      boolean-output: ${{ steps.emit-output.outputs.raw-output == 'yes' }}
+      string-output: ${{ steps.emit-output.outputs.raw-output }}
+    steps:
+      - id: emit-output
+        run: |
+          if [[ -z "$some_flag" ]]; then
+            echo "::set-output name=raw-output::no"
+          else
+            echo "::set-output name=raw-output::yes"
+          fi
+
+  receiver-job:
+    needs:
+      emitter-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Output
+        run: |
+          echo "${{ needs.emitter-job }}"
+          echo "${{ needs.emitter-job.outputs }}"
+          echo "${{ needs.emitter-job.outputs.boolean-output }}"
+          echo "${{ needs.emitter-job.outputs.string-output }}"
