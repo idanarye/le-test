@@ -1,6 +1,6 @@
 name: Test Job Output
 
-env:
+# env:
   # some_flag: blabla
 
 on:
