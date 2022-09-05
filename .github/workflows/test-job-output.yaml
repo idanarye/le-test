@@ -24,10 +24,36 @@ jobs:
             echo "::set-output name=raw-output::yes"
           fi
 
-  receiver-job:
+  receiver-job1:
     needs:
       emitter-job
-    if: ${{ needs.emitter-job.outputs.boolean-output == true }}
+    if: ${{ needs.emitter-job.outputs.boolean-output == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Output
+        run: |
+          echo "${{ needs.emitter-job }}"
+          echo "${{ needs.emitter-job.outputs }}"
+          echo "${{ needs.emitter-job.outputs.boolean-output }}"
+          echo "${{ needs.emitter-job.outputs.string-output }}"
+
+  receiver-job2:
+    needs:
+      emitter-job
+    if: ${{ needs.emitter-job.outputs.string-output == 'yes' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Output
+        run: |
+          echo "${{ needs.emitter-job }}"
+          echo "${{ needs.emitter-job.outputs }}"
+          echo "${{ needs.emitter-job.outputs.boolean-output }}"
+          echo "${{ needs.emitter-job.outputs.string-output }}"
+
+  receiver-job3:
+    needs:
+      emitter-job
+    if: ${{ needs.emitter-job.outputs.string-output == 'no' }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Output
