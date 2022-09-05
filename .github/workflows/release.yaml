@@ -202,7 +202,7 @@ jobs:
   check-if-upload-to-itch-is-configured:
     runs-on: ubuntu-latest
     outputs:
-      should-upload: ${{ steps.check-env.outputs.has-itch-target == 'yes' }}
+      should-upload: ${{ steps.check-env.outputs.has-itch-target }}
     steps:
       - id: check-env
         run: |
@@ -220,7 +220,7 @@ jobs:
       - release-linux
       - release-windows
       - release-macos
-    if: ${{ needs.check-if-upload-to-itch-is-configured.outputs.should-upload }}
+    if: ${{ needs.check-if-upload-to-itch-is-configured.outputs.should-upload == 'yes' }}
 
     steps:
       - name: Download artifacts
