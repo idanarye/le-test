@@ -27,6 +27,7 @@ jobs:
   receiver-job:
     needs:
       emitter-job
+    if: ${{ needs.emitter-job.outputs.boolean-output }}
     runs-on: ubuntu-latest
     steps:
       - name: Print Output
