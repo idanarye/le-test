@@ -234,13 +234,14 @@ jobs:
           unzip butler.zip
           chmod +x butler
           ./butler -V
-      - name: Show what we have
-        run: |
-          ls -R
+      - uses: little-core-labs/get-git-tag@v3.0.1
+        id: get_version
       - name: Upload to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          for channel in $(ls builds); do
-              ./butler push --fix-permissions builds/$channel/* ${{ env.itch_target }}:$channel
+          ./butler push \
+              --fix-permissions builds/$channel/* \
+              --userversion="${{ steps.get_version.outputs.tag }}" \
+              ${{ env.itch_target }}:$channel
           done
