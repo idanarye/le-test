@@ -16,6 +16,8 @@ jobs:
     steps:
       - id: emit-output
         run: |
+          echo some_flag is "$some_flag"
+          echo could also be "${{ env.some_flag }}"
           if [[ -z "$some_flag" ]]; then
             echo "::set-output name=raw-output::no"
           else
