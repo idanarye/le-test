@@ -203,6 +203,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_upload: ${{ env.itch_target != '' }}
+    steps:
+      - run: echo
 
   upload-to-itch:
     runs-on: ubuntu-latest
