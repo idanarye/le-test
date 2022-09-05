@@ -200,7 +200,7 @@ jobs:
           overwrite: true
 
   upload-to-itch:
-    if: ${{ env.itch_target != '' }}
+    if: env.itch_target != ''
     runs-on: ubuntu-latest
     needs:
       - release-wasm
