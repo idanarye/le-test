@@ -200,7 +200,6 @@ jobs:
           overwrite: true
 
   upload-to-itch:
-    if: env.itch_target != ''
     runs-on: ubuntu-latest
     needs:
       - release-wasm
@@ -209,6 +208,11 @@ jobs:
       - release-macos
 
     steps:
+
+      - name: Skip uploading to itch
+        if: ${{ env.itch_target == '' }}
+        uses: saulmaldonado/skip-workflow@v1
+
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
